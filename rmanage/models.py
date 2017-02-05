@@ -19,20 +19,35 @@ class ApplicantDetail(models.Model):
     resume = models.FileField(upload_to='resume/')
     role = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
+    score = models.IntegerField(default=0)
 
 class RecruitmentDrive(models.Model):
     company = models.ForeignKey(Company)
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     date_created = models.DateField()
+    end_date = models.DateField()
+    
+class Round(models.Model):
+    name = models.CharField(max_length=100)
+    company = models.ForeignKey(Company)
+    role = models.CharField(max_length=100)
 
 class Panel(models.Model):
     name = models.CharField(max_length=100)
+    current_candidate = models.ForeignKey(Applicant)
     rdrive = models.ForeignKey(RecruitmentDrive)
+    round_info = models.ForeignKey(Round)
 
 class Collaborator(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     company = models.ForeignKey(Company)
-    panel = models.ForeignKey(Panel)
+    panel = models.ManyToManyField(Panel)
     phone_no = models.CharField(max_length=15)
+
+class Score(models.Model):
+    applicant = models.ForeignKey(Applicant)
+    panel = models.ForeignKey(Panel)
+    score = models.IntegerField(default=0)
+
