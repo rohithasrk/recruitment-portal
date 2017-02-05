@@ -12,5 +12,12 @@ urlpatterns = [
     url(r'^company/(?P<company>[A-Za-z0-9]+)/manage/$', views.manage, name='manage'),
     url(r'^company/(?P<company>[A-Za-z0-9]+)/notices/$', views.see_notices, name='see_notices'),
     url(r'^company/(?P<company>[A-Za-z0-9]+)/rdrive/$', views.rdrive, name='rdrive'),
-    url(r'^company/(?P<company>[A-Za-z0-9]+)/create/$', views.create_rdrive, name='create_rdrive'),
+    url(r'^company/(?P<company>[A-Za-z0-9]+)/rdrive/start/$', views.rdrive_start, name='rdrive_start'),
+    url(r'^company/(?P<company>[A-Za-z0-9]+)/rdrive/createNew/$', views.rdrive_create, name='rdrive_create'),
+    url(r'^company/(?P<company>[A-Za-z0-9]+)/panel/$', views.panel, name='panel'),
+    url(r'^company/(?P<company>[A-Za-z0-9]+)/panel/createPanel/$', views.create_panel, name='create_panel'),
+    url(r'^company/(?P<company>[A-Za-z0-9]+)/addMembers/$', views.add_members, name='add_members'),
+    url(r'^company/(?P<company>[A-Za-z0-9]+)/publishNotices/$', views.add_notice, name='add_notice'),
+    url(r'^company/(?P<company>[A-Za-z0-9]+)/candidate/$', views.view_candidates, name='view_candidates'),
+    url(r'^company/(?P<company>[A-Za-z0-9]+)/rdrive/(?P<year>[0-9]+)/(?P<role>[A-Za-z0-9])/$', views.rdrive_edit, name='rdrive_edit'),
 ]
