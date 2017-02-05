@@ -24,3 +24,15 @@ class RecruitmentDrive(models.Model):
     company = models.ForeignKey(Company)
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
+    date_created = models.DateField()
+
+class Panel(models.Model):
+    name = models.CharField(max_length=100)
+    rdrive = models.ForeignKey(RecruitmentDrive)
+
+class Collaborator(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    company = models.ForeignKey(Company)
+    panel = models.ForeignKey(Panel)
+    phone_no = models.CharField(max_length=15)
