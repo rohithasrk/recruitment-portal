@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -40,8 +41,7 @@ class Panel(models.Model):
     round_info = models.ForeignKey(Round)
 
 class Collaborator(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
+    hr = models.OneToOneField(User)
     company = models.ForeignKey(Company)
     panel = models.ManyToManyField(Panel)
     phone_no = models.CharField(max_length=15)
@@ -50,4 +50,3 @@ class Score(models.Model):
     applicant = models.ForeignKey(Applicant)
     panel = models.ForeignKey(Panel)
     score = models.IntegerField(default=0)
-
