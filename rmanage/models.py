@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 # Create your models here.
 
@@ -74,6 +74,13 @@ class Collaborator(models.Model):
     def __str__(self):
        return self.hr.username
 
+
+class CompanyAdmin(models.Model):
+    admin = models.OneToOneField(User)
+    company = models.ForeignKey(Company)
+
+    def __str__(self):
+        return self.company.name
 
 class Score(models.Model):
     applicant = models.ForeignKey(Applicant)
