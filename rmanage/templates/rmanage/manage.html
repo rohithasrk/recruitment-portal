@@ -1,1 +1,25 @@
-<a href="">
+<a href="../../createnew">Create a New Recruitment Drive</a></br></br>
+
+Ongoing Recruitment Drives
+</br>
+{% for drive in ongoingDrives %}
+<a href="{% url 'rmanage:rdrive' drive.company.name drive.id  %}">{{ drive.name }}</a>
+{% endfor %}
+</br></br>
+
+Previous Recruitment Drives
+{% for drive in previousDrives %}
+{{ drive.name  }}
+{% endfor  %}
+</br></br>
+
+Other Links
+</br>
+<a href="{% url 'rmanage:add_members' company %}">Add HR Managers</a>
+</br>
+<a href="{% url 'rmanage:add_notice' company %}">Add Notices</a>
+
+
+
+
+
