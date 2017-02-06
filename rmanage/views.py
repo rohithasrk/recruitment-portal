@@ -19,7 +19,8 @@ def register(request):
          if form.is_valid():
              company = form.save(commit=False)
              company.save()
-             admin = User(username=company.email, password=company.password)
+             admin = User(username=company.email)
+             admin.set_password(company.password)
              admin.save()
              admin = CompanyAdmin(admin=admin, company=company)
              admin.save()
