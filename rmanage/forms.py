@@ -25,6 +25,7 @@ class ApplicantDetailForm(forms.ModelForm):
 class RecruitmentDriveForm(forms.ModelForm):
     end_date = forms.DateField(widget=forms.DateInput())
     class Meta:
+        model = RecruitmentDrive
         fields = ['name', 'role', 'end_date']
 
 class RoundForm(models.Model):

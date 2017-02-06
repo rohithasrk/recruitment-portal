@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from rmanage.models import *
 import datetime
-
+from .forms import *
 from .models import *
 
 def index(request):
@@ -15,7 +15,7 @@ def register(request):
          form = CompanyForm(request.POST)
          if form.is_valid():
              form.cleaned_data
-             form.save()
+             instance = form.save()
              return render(request, 'rmanage/thanks.html', {})
     else:
         form = CompanyForm()
@@ -53,14 +53,29 @@ def see_notices(request, company):
 def rdrive(request, company, r_id):
     return HttpResponse("Recruitment drive page.")
 
-def create_rdrive(request, company):
-    return HttpResponse("Recruitment drive form.")
+def rdrive_create(request, company):
+    if request.method == 'POST':
+         form = RecruitmentDriveForm(request.POST)
+         company = company.lower()
+         company = Company.objects.get(name=company);          
+         date_created = datetime.date.today()
+         if form.is_valid():
+             form.cleaned_data
+             instance = form.save(commit=False)
+             instance.company = company
+             instance.date_created = date_created
+             instance.save()
+             return render(request, 'rmanage/rdrive_added.html', {})
+      
+    else:
+        form = RecruitmentDriveForm()
+ 
+    return render(request, 'rmanage/rdrive_create.html', {'form': form, 'company': company})    
+
+
 
 def rdrive_start(request, company):
     return HttpResponse("Start a new recruitment drive")
-
-def rdrive_create(request, company):
-    return HttpResponse("Create a recuitment drive")
 
 def panel(request, company):
     return HttpResponse("View Panel")
