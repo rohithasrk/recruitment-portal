@@ -43,16 +43,19 @@ def apply_into(request, company):
 
 @login_required
 def manage(request, company):
-    now = datetime.datetime.now() 
-    ongoingDrives = RecruitmentDrive.objects.filter(end_date__gte=now).order_by('end_date')
-    previousDrives = RecruitmentDrive.objects.filter(end_date__lte=now).order_by('end_date')  
-    
-    return render(request, 'rmanage/manage.html',{
-                     'ongoingDrives': ongoingDrives, 
-                     'previousDrives': previousDrives,
-                     'company': company
-                     }
-                 )
+    if company_auth(request, company):
+        now = datetime.datetime.now() 
+        ongoingDrives = RecruitmentDrive.objects.filter(end_date__gte=now).order_by('end_date')
+        previousDrives = RecruitmentDrive.objects.filter(end_date__lte=now).order_by('end_date')  
+        
+        return render(request, 'rmanage/manage.html',{
+                         'ongoingDrives': ongoingDrives, 
+                         'previousDrives': previousDrives,
+                         'company': company
+                         }
+                     )
+    else:
+        raise Http404()
 
 
 def see_notices(request, company):
@@ -127,6 +130,7 @@ def collab_logout(request):
 @login_required
 def company_auth(request, company):
     user = request.user
+    company = Company.objects.get(name=company)
     if Collaborator.objects.filter(hr=user, company=company).exists() or \
         CompanyAdmin.objects.filter(admin=user, company=company).exists():
         return True
