@@ -31,14 +31,20 @@ def register(request):
 
 
 def advert(request, company):
-    return render(request, 'rmanage/advert.html', {
-                    'company': company,
-                    }
-                )
+    if company_exists(company):
+        return render(request, 'rmanage/advert.html', {
+                        'company': company,
+                        }
+                    )
+    else:
+        raise Http404()
 
 
 def apply_into(request, company):
-    return HttpResponse("Form page of " + company )
+    if company_exists(company):
+        return HttpResponse("Form page of " + company )
+    else:
+        raise Http404()
 
 
 @login_required
@@ -59,47 +65,78 @@ def manage(request, company):
 
 
 def see_notices(request, company):
-    return HttpResponse("Notices page.")
+    if company_exists(company):
+        return HttpResponse("Notices page.")
+    else:
+        raise Http404()
 
 
+@login_required
 def rdrive(request, company, r_id):
-    return HttpResponse("Recruitment drive page.")
+    if company_auth(request, company):
+        return HttpResponse("Recruitment drive page.")
+    else:
+        raise Http404()
 
 
+@login_required
 def create_rdrive(request, company):
-    return HttpResponse("Recruitment drive form.")
+    if is_admin(request, company):
+        return HttpResponse("Recruitment drive form.")
+    else:
+        raise Http404()
 
 
+@login_required
 def rdrive_start(request, company):
-    return HttpResponse("Start a new recruitment drive")
+    if is_admin(request, company):
+        return HttpResponse("Start a new recruitment drive")
+    else:
+        raise Http404()
 
 
+@login_required
 def rdrive_create(request, company):
-    return HttpResponse("Create a recuitment drive")
+    if is_admin(request, company):
+        return HttpResponse("Create a recuitment drive")
+    else:
+        raise Http404()
 
 
+@login_required
 def panel(request, company):
-    return HttpResponse("View Panel")
+    if company_auth(request, company):
+        return HttpResponse("View Panel")
 
 
+@login_required
 def create_panel(request, company):
-    return HttpResponse("Create a panel")
+    if is_admin(request, company):
+        return HttpResponse("Create a panel")
 
 
+@login_required
 def add_members(request, company):
-    return HttpResponse("Add collaborators")
+    if is_admin(request, company):
+        return HttpResponse("Add collaborators")
 
 
+@login_required
 def add_notice(request, company):
-    return HttpResponse("Add a notice")
+    if is_admin(request, company):
+        return HttpResponse("Add a notice")
 
 
+@login_required
 def view_candidates(request, company):
-    return HttpResponse("View Candidate")
+    if company_auth(request, company):
+        return HttpResponse("View Candidate")
 
 
+@login_required
 def rdrive_edit(request,company):
-    return HttpResponse("Edit Recruitment Drive")
+    if is_admin(request, company):
+        return HttpResponse("Edit Recruitment Drive")
 
 
 def collab_login(request):
@@ -136,3 +173,21 @@ def company_auth(request, company):
         return True
     else:
         return False
+
+
+def company_exists(company):
+    if Company.objects.filter(name=company).exists():
+        return True
+    else:
+        return False
+
+
+def is_admin(request, company):
+    user = request.user
+    company = Company.objects.get(name=company)
+    if CompanyAdmin.objects.filter(admin=user, company=company).exists():
+        return True
+    else:
+        return False
+
+
