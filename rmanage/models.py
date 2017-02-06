@@ -82,6 +82,7 @@ class CompanyAdmin(models.Model):
     def __str__(self):
         return self.company.name
 
+
 class Score(models.Model):
     applicant = models.ForeignKey(Applicant)
     panel = models.ForeignKey(Panel)
@@ -89,3 +90,5 @@ class Score(models.Model):
 
     def __str__(self):
        return self.applicant.name
+
+
