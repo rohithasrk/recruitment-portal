@@ -21,7 +21,15 @@ def register(request):
     return render(request, 'rmanage/register.html', {'form': form})    
 
 def advert(request, company):
-    return render(request, 'rmanage/advert.html', {'company': company})
+    if request.user.is_authenticated:
+        is_collab = 1
+    else:
+        is_collab = 0
+    return render(request, 'rmanage/advert.html', {
+                    'company': company,
+                    'is_collab': is_collab
+                    }
+                )
 
 def apply_into(request, company):
     return HttpResponse("Form page of " + company )
