@@ -120,6 +120,8 @@ def create_panel(request, company):
 def add_members(request, company):
     if is_admin(request, company):
         return HttpResponse("Add collaborators")
+    else:
+        raise Http404()
 
 
 @login_required
@@ -148,7 +150,10 @@ def collab_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                company = Collaborator.objects.get(hr=user).company.name
+                try:
+                    company = CompanyAdmin.objects.get(admin=user).company.name
+                except:
+                    company = Collaborator.objects.get(hr=user).company.name
                 manage_url = '/rmanage/company/' + company + '/manage/'
                 return HttpResponseRedirect(manage_url)
         else:
