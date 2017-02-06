@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
 from .models import *
+from .forms import *
 
 def index(request):
     return render(request, 'rmanage/index.html', {})
@@ -12,8 +13,12 @@ def register(request):
     if request.method == 'POST':
          form = CompanyForm(request.POST)
          if form.is_valid():
-             form.cleaned_data
-             form.save()
+             company = form.save(commit=False)
+             company.save()
+             admin = User(username=company.email, password=company.password)
+             admin.save()
+             admin = CompanyAdmin(admin=admin, company=company)
+             admin.save()
              return render(request, 'rmanage/thanks.html', {})
     else:
         form = CompanyForm()
