@@ -10,8 +10,8 @@ def register(request):
     if request.method == 'POST':
         form = CompanyForm(request.POST)
         if form.is_valid():
-            f = form.cleaned_data
-            f.save()
+            form.cleaned_data
+            form.save()
             return render(request, 'rmanage/thanks.html', {})
     else:
         form = CompanyForm()
