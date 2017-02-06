@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
 
 from .forms import *
 
@@ -59,3 +61,26 @@ def view_candidates(request, company):
 
 def rdrive_edit(request,company):
     return HttpResponse("Edit Recruitment Drive")
+
+def collab_login(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                company = Collaborator.objects.get(hr=user).company.name
+                manage_url = '/rmanage/company/' + company + '/manage/'
+                return HttpResponseRedirect(manage_url)
+        else:
+            return render(request, 'rmanage/login.html', {
+                                'error_message': 'Invalid Credentials'
+                                    })
+    else:
+        return render(request, 'rmanage/login.html', {})
+
+@login_required
+def collab_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/rmanage/')
