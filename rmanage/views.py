@@ -24,3 +24,27 @@ def rdrive(request, company):
 
 def create_rdrive(request, company):
     return HttpResponse("Recruitment drive form.")
+
+def rdrive_start(request, company):
+    return HttpResponse("Start a new recruitment drive")
+
+def rdrive_create(request, company):
+    return HttpResponse("Create a recuitment drive")
+
+def panel(request, company):
+    return HttpResponse("View Panel")
+
+def create_panel(request, company):
+    return HttpResponse("Create a panel")
+
+def add_members(request, company):
+    return HttpResponse("Add collaborators")
+
+def add_notice(request, company):
+    return HttpResponse("Add a notice")
+
+def view_candidates(request, company):
+    return HttpResponse("View Candidate")
+
+def rdrive_edit(request,company):
+    return HttpResponse("Edit Recruitment Drive")
