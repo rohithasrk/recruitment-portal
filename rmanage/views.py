@@ -108,7 +108,7 @@ def create_rdrive(request, company):
         return HttpResponse("Recruitment drive form.")
     else:
         raise Http404()
->>>>>>> fcaf7c1898d799343dd36db135f0889c3ddecf12
+
 
 
 @login_required
@@ -119,8 +119,6 @@ def rdrive_start(request, company):
         raise Http404()
 
 
-<<<<<<< HEAD
-=======
 @login_required
 def rdrive_create(request, company):
     if is_admin(request, company):
@@ -130,7 +128,6 @@ def rdrive_create(request, company):
 
 
 @login_required
->>>>>>> fcaf7c1898d799343dd36db135f0889c3ddecf12
 def panel(request, company):
     if company_auth(request, company):
         return HttpResponse("View Panel")
