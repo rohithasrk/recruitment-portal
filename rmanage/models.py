@@ -11,6 +11,7 @@ class Company(models.Model):
     def __str__(self):
        return self.name
 
+
 class Applicant(models.Model):
     name = models.CharField(max_length=30)
     email = models.EmailField()
@@ -18,7 +19,6 @@ class Applicant(models.Model):
 
     def __str__(self):
        return self.name
-
 
 
 class ApplicantDetail(models.Model):
@@ -72,7 +72,7 @@ class Collaborator(models.Model):
     phone_no = models.CharField(max_length=15)
 
     def __str__(self):
-       return self.name
+       return self.hr.username
 
 
 class Score(models.Model):
@@ -81,6 +81,4 @@ class Score(models.Model):
     score = models.IntegerField(default=0)
 
     def __str__(self):
-       return self.name
-
-
+       return self.applicant.name
