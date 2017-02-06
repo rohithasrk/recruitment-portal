@@ -71,6 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rportal.wsgi.application'
 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
