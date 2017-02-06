@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
@@ -8,6 +8,7 @@ from .forms import *
 
 def index(request):
     return render(request, 'rmanage/index.html', {})
+
 
 def register(request):
     if request.method == 'POST':
@@ -22,58 +23,72 @@ def register(request):
              return render(request, 'rmanage/thanks.html', {})
     else:
         form = CompanyForm()
- 
-    return render(request, 'rmanage/register.html', {'form': form})    
+    
+    return render(request, 'rmanage/register.html', {'form': form})
+
 
 def advert(request, company):
-    if request.user.is_authenticated:
-        is_collab = 1
-    else:
-        is_collab = 0
     return render(request, 'rmanage/advert.html', {
                     'company': company,
-                    'is_collab': is_collab
                     }
                 )
+
 
 def apply_into(request, company):
     return HttpResponse("Form page of " + company )
 
+
+@login_required
 def manage(request, company):
-    return render(request, 'rmanage/manage.html')
+    if company_auth(request, company):
+        return render(request, 'rmanage/manage.html')
+    else:
+        raise Http404()
+
 
 def see_notices(request, company):
     return HttpResponse("Notices page.")
 
+
 def rdrive(request, company):
     return HttpResponse("Recruitment drive page.")
+
 
 def create_rdrive(request, company):
     return HttpResponse("Recruitment drive form.")
 
+
 def rdrive_start(request, company):
     return HttpResponse("Start a new recruitment drive")
+
 
 def rdrive_create(request, company):
     return HttpResponse("Create a recuitment drive")
 
+
 def panel(request, company):
     return HttpResponse("View Panel")
+
 
 def create_panel(request, company):
     return HttpResponse("Create a panel")
 
+
 def add_members(request, company):
     return HttpResponse("Add collaborators")
+
 
 def add_notice(request, company):
     return HttpResponse("Add a notice")
 
+
 def view_candidates(request, company):
     return HttpResponse("View Candidate")
 
+
 def rdrive_edit(request,company):
     return HttpResponse("Edit Recruitment Drive")
+
 
 def collab_login(request):
     if request.method == "POST":
@@ -93,7 +108,18 @@ def collab_login(request):
     else:
         return render(request, 'rmanage/login.html', {})
 
+
 @login_required
 def collab_logout(request):
     logout(request)
     return HttpResponseRedirect('/rmanage/')
+
+
+@login_required
+def company_auth(request, company):
+    user = request.user
+    if Collaborator.objects.filter(hr=user, company=company).exists() or \
+        CompanyAdmin.objects.filter(admin=user, company=company).exists():
+        return True
+    else:
+        return False
