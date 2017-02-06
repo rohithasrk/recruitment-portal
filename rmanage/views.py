@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from rmanage.models import *
+import datetime
 
 def index(request):
     return render(request, 'rmanage/index.html', {})
@@ -25,12 +27,20 @@ def apply_into(request, company):
     return HttpResponse("Form page of " + company )
 
 def manage(request, company):
-    return render(request, 'rmanage/manage.html')
+    now = datetime.datetime.now() 
+    ongoingDrives = RecruitmentDrive.objects.filter(end_date__gte=now).order_by('end_date')
+    previousDrives = RecruitmentDrive.objects.filter(end_date__lte=now).order_by('end_date')  
+    return render(request, 'rmanage/manage.html',{
+                     'ongoingDrives': ongoingDrives, 
+                     'previousDrives': previousDrives,
+                     'company': company
+                     }
+                 )
 
 def see_notices(request, company):
     return HttpResponse("Notices page.")
 
-def rdrive(request, company):
+def rdrive(request, company, r_id):
     return HttpResponse("Recruitment drive page.")
 
 def create_rdrive(request, company):
