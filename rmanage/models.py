@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, Group
 # Create your models here.
 
 class Company(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
     password = models.CharField(max_length=30)
     
