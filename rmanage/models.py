@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 # Create your models here.
 
 class Company(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
     password = models.CharField(max_length=30)
     
@@ -75,6 +75,14 @@ class Collaborator(models.Model):
        return self.hr.username
 
 
+class CompanyAdmin(models.Model):
+    admin = models.OneToOneField(User)
+    company = models.ForeignKey(Company)
+
+    def __str__(self):
+        return self.company.name
+
+
 class Score(models.Model):
     applicant = models.ForeignKey(Applicant)
     panel = models.ForeignKey(Panel)
@@ -82,3 +90,5 @@ class Score(models.Model):
 
     def __str__(self):
        return self.applicant.name
+
+
