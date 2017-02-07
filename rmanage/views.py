@@ -110,12 +110,18 @@ def see_notices(request, company):
 @login_required
 def rdrive(request, company, r_id):
     if company_auth(request, company):
-        try:
-            rdrive = RecruitmentDrive.objects.get(pk=r_id)
-            rounds = Round.objects.filter(recruitment_drive=rdrive)
-            panels = Panel.objects.filter(rdrive=rdrive)
-        except:
-            raise Http404()
+        rdrive = RecruitmentDrive.objects.get(pk=r_id)
+        rounds = Round.objects.filter(recruitment_drive=rdrive)
+        panels = Panel.objects.filter(rdrive=rdrive)
+        applicants = ApplicantDetail.objects.filter(rdrive=rdrive)
+    
+        return render(request, 'rmanage/rdrive_ongoing.html', {
+                                                    'rdrive': rdrive,
+                                                    'rounds': rounds,
+                                                    'panels': panels,
+                                                    'applicants': applicants
+                                                    }
+                                            )
     else:
         raise Http404()
 
@@ -163,6 +169,18 @@ def rdrive_create(request, company):
     else:
         raise Http404()
 
+
+def rdrive_round(request, company, r_id):
+    if is_admin(request, company):
+        if request.method == 'POST':
+            form = RoundForm(request.POST)
+            if form.is_valid():
+                form.cleaned_data
+                instance = form.save(commit=False)
+                instance.company = Company.objects.get(name=company)
+                instance.recruitment_drive = RecruitmentDrive.objects.get(pk=r_id)
+    else:
+        raise Http404()
 
 @login_required
 def panel(request, company):
