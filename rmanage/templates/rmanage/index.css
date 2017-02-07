@@ -1,0 +1,53 @@
+@font-face {
+	font-family: app;
+	src: url(fonts/Kingsmen_D.otf);
+}
+
+button {
+	width: 300;
+	height: 123;
+	line-height: 3;
+	font-size: 30;
+	background: blue;
+	display: inline-block;
+	font-family: app;
+	border-width: 3;
+	border-color: black;
+}
+
+button:hover {
+	box-shadow: 0px 0px 19px 0px black;
+    	transition: 0.3s;
+	background: #00D0D0;
+}
+
+.header {
+	height: 64;
+	padding: 20;
+	box-shadow: 0px -3px 100px #000000;
+    	border-radius: 0px 0px 10px 10px;
+	background: #00D0D0;
+}
+
+.app {
+	height: 44;
+	font-size: 45;
+	line-height: 1;
+	font-family: app;
+}
+
+.tagline {
+	padding-left: 2;
+	line-height: 0.5;
+}
+
+.info {
+	padding-top: 88;
+	padding-bottom: 68;
+	text-align: center;
+}
+
+body {
+	margin: 0;
+	background: #00FFFF;
+}
