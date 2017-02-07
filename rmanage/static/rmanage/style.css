@@ -1,0 +1,115 @@
+body 
+{
+      background-color:#90CAF9;
+}
+
+.container
+{
+    height: 100vh;
+    width: 892px;
+    background-color: #fff
+}
+
+.home_head
+{
+    color: #333;
+    font-family: sans-serif;
+    font-size: 41.5px;
+    font-weight: 800;
+    margin-top: 200px;
+}
+ 
+.register_text
+{
+    color: #333;
+    font-family: sans-serif;
+    font-size: 30px
+}
+
+.reg_form
+{
+    margin-top: 20px;
+}
+.register_form
+{
+   margin-top: 200px;
+}
+
+.home_subhead
+{
+    color: yellow;
+    font-family: sans-serif;
+    font-size: 20.5px;
+    font-weight: 700;
+    margin-top: 20px;
+}
+
+.home_button
+{
+   background-color: #333;
+   height: 30px; 
+   width: 90px;
+   margin-top: 20px;
+   
+}
+
+
+.logo
+{
+    height: 70px;
+    width: 70px;
+    margin-top: 15px;
+    display: inline-block;
+}
+.appName
+{
+    font-family: sans-serif;
+    font-size: 50px;
+    font-weight: 900;
+    margin-top: 15px;
+    margin-left:10px;
+    display: inline-block;
+    position:absolute; 
+    color:#033   
+}
+
+.headRule
+{
+    height: 4px;
+    color:#333;
+    border:0;
+    box-shadow: 0 10px 10px -10px #333 inset;
+    
+}
+
+.subHead
+{
+    font-family: sans-serif;
+    font-size: 30px;
+    color: #333;
+}
+
+.queDiv
+{
+    width: 100%;
+    margin-top:10px;
+    background-color:#fff;
+    border-radius: 5px;
+}
+
+.ques
+{
+    color: #333;
+    font-family: sans-serif;
+    font-size: 25px;
+    margin-left: 10px;
+
+}
+.option
+{
+    color: #333;
+    font-family: sans-serif;
+    font-size: 25px;
+    margin-left: 10px;
+
+}

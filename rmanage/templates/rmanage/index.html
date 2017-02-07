@@ -1,12 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
+{% extends "base.html"  %}
+{% block title  %} Welcome  {% endblock  %}
+
+{% block head %}
         <title>RManage</title>
         <meta charset="UTF-8">
-    </head>
-    <body>
-        <div>HomePage of RPortal.</div>
-        <a href="/rmanage/register"><button id="register">Apply now</button></a>
-        <a href="/rmanage/login"><button id="login">Login</button></a>
-    </body>
-</html>
+{% endblock %}
+{% block content %}
+        <div class='container'> 
+             <div class='row'>
+                 <div class= 'col-lg-6 col-lg-offset-3'>
+                     <div class = 'home_head'>
+                         Welcome to ManagHR
+                     </div> 
+                 <div>
+             </div>
+             <div class='row'>
+                 <div class = 'col-lg-8 col-lg-offset-2'>
+                       </hr stlye='width:100%; height:5px'>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class = 'col-lg-10 col-lg-offser-1'>
+                      <div class = 'home_subhead'>
+                         Your one stop solution to all your hiring needs
+                      </div>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class= 'col-lg-5 col-lg-offset-3'>
+                     <a href="/rmanage/register"><button class='home_button' id="register">Apply now</button></a>
+                     <a href="/rmanage/login"><button class='home_button' id="login">Login</button></a>                     
+                 </div>
+             </div>
+        </div>
+{% endblock %}
+

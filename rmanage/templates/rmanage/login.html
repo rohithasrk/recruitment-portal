@@ -1,16 +1,30 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Login</title>
-    </head>
-    <body>
-        <form action='/rmanage/login/' method="post">
-            {% csrf_token %}
-            Username: <input type="text" name="username" /><br>
-            Password: <input type="password" name="password" /><br>
-            <input type="submit" value="Submit"/>
-            {{ error_message }}
-        </form>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% block title  %} Login {% endblock %}
+{% block content %}
+      <div class='container'>
+         <div class='row'>
+             <div class='col-lg-6 col-lg-offset-3'>
+                 <div class='register_form'>
+                     <div class='register_text'>
+                        <center> Sign in to your existing account</center>
+                     </div>
+                     <center>
+                         <form action='/rmanage/login/' method="post">
+                             {% csrf_token %}
+                             <div class="form-group">
+				<label for="sel1">Username:</label> <input type="text" name="username" id="sel1"/><br>
+                             </div>    
+			     <div class="form-group">
+				<label for="sel2">Password:</label> <input type="password" name="password" id="sel2"/><br>
+                             </div>
+				<input type="submit" value="Submit" class="btn"/>
+                             {{ error_message }}
+                         </form> 
+                    </center>                
+                  </div>
+             </div>
+    </div>
+   
+{% endblock %} 
+  
+

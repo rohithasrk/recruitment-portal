@@ -1,24 +1,37 @@
+{% extends 'base.html' %}
 
-<a href="{% url 'rmanage:rdrive_create' company  %}">Create a New Recruitment Drive</a></br></br>
+{% block title  %} Manage {% endblock  %}
 
-Ongoing Recruitment Drives
-</br>
-{% for drive in ongoingDrives %}
-<a href="{% url 'rmanage:rdrive' drive.company.name drive.id  %}">{{ drive.name }}</a>
-{% endfor %}
-</br></br>
+{% block content %}
+    <div class= 'container'>
+        <div style="font-size:30px">Manage Your Recruitment </div>
+        <div class='well'>
+            <a href="{% url 'rmanage:rdrive_create' company  %}">Create a New Recruitment Drive</a></br></br>
+        </div>
+        <div class='well'>
+            Ongoing Recruitment Drives
+            <br>
+            {% for drive in ongoingDrives %}
+            <a href="{% url 'rmanage:rdrive' drive.company.name drive.id  %}">{{ drive.name }}</a>
+            {% endfor %}
+            </br></br>
+        </div>
+       <div class='well'>
+            Previous Recruitment Drives
+            </br>
+            {% for drive in previousDrives %}
+            {{ drive.name  }}
+            {% endfor  %}
+        </div>
+         <div class='well'>
+             Other Links
+            <a href="{% url 'rmanage:add_members' company %}">Add HR Managers</a>
+            <a href="{% url 'rmanage:add_notice' company %}">Add Notices</a>
+        </div>
+ 
+    </div>
+{% endblock  %}
 
-Previous Recruitment Drives
-{% for drive in previousDrives %}
-{{ drive.name  }}
-{% endfor  %}
-</br></br>
-
-Other Links
-</br>
-<a href="{% url 'rmanage:add_members' company %}">Add HR Managers</a>
-</br>
-<a href="{% url 'rmanage:add_notice' company %}">Add Notices</a>
 
 
 

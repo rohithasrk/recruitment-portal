@@ -1,15 +1,28 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Register</title>
-        <meta charset="UTF-8">
-    </head>
-    <body>
-        <form action="/rmanage/register/" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Submit"/>
-        </form>
-    </body>
-</html>
+{% extends "base.html"  %}
+{% block title %}
+   Register
+{% endblock %}
+{% block head %}
+   <meta charset="UTF-8">
+{% endblock %}
+{% block content  %}
+     <div class='container'>
+         <div class='row'>
+             <div class='col-lg-6 col-lg-offset-3'>
+                 <div class='register_form'>
+                     <div class='register_text'>
+                        <center> Register for a new account</center>
+                     </div>
+                     <center>
+                     <form class='reg_form' action="/rmanage/register/" method="post">
+                         {% csrf_token %}
+                         {{ form.as_p }}
+                         <input type="submit" value="Submit"/>
+                     </form>
+                     </center>                
+                  </div>
+             </div>
+    </div>
+{% endblock %}
+
+
