@@ -20,7 +20,7 @@ class ApplicantForm(forms.ModelForm):
 class ApplicantDetailForm(forms.ModelForm):
     class Meta:
         model = ApplicantDetail
-        fields = ['company', 'phone_no', 'resume', 'role']
+        fields = ['phone_no', 'resume', 'role']
 
 class RecruitmentDriveForm(forms.ModelForm):
     end_date = forms.DateField(widget=forms.DateInput())

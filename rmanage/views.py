@@ -43,7 +43,28 @@ def advert(request, company):
 
 def apply_into(request, company):
     if company_exists(company):
-        return HttpResponse("Form page of " + company )
+        if request.method == 'POST':
+            form = ApplicantForm(request.POST)
+            detailform = ApplicantDetailForm(request.POST)
+            company = Company.objects.get(name=company)
+            if form.is_valid() and detailform.is_valid():
+                applicant = form.save(commit=False)
+                applicant.save()
+                applicant_detail = detailform.save(commit=False)
+                applicant_detail.applicant = applicant
+                applicant_detail.company = company
+                applicant_detail.save()
+                return HttpResponseRedirect('/rmanage/company/' + company)
+        else:
+                form = ApplicantForm()
+                detailform = ApplicantDetailForm()
+            
+        return render(request, 'rmanage/apply.html', {
+                                            'form': form,
+                                            'detailform': detailform,
+                                            'company': company
+                                                }
+                                            )
     else:
         raise Http404()
 

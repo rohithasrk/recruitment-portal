@@ -1,0 +1,15 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Apply into company</title>
+    </head>
+    <body>
+        <form action="/rmanage/company/{{company}}/apply/" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {{ detailform.as_p }}
+            <input type="submit" value="Submit"/>
+        </form>
+    </body>
+</html>
