@@ -56,7 +56,8 @@ def apply_into(request, company):
                 applicant_detail.applicant = applicant
                 applicant_detail.company = company
                 applicant_detail.save()
-                return HttpResponseRedirect('/rmanage/company/' + company)
+                
+                return HttpResponseRedirect('/rmanage/company/' + company.name)
         else:
                 form = ApplicantForm()
                 detailform = ApplicantDetailForm()
