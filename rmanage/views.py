@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
 import datetime
-
+from .forms import *
 from .models import *
 from .forms import *
 
@@ -17,6 +17,8 @@ def register(request):
     if request.method == 'POST':
          form = CompanyForm(request.POST)
          if form.is_valid():
+             form.cleaned_data
+             instance = form.save()
              company = form.save(commit=False)
              company.save()
              admin = User(username=company.email)
@@ -101,12 +103,33 @@ def rdrive(request, company, r_id):
         raise Http404()
 
 
+
+def rdrive_create(request, company):
+    if request.method == 'POST':
+         form = RecruitmentDriveForm(request.POST)
+         company = company.lower()
+         company = Company.objects.get(name=company);          
+         date_created = datetime.date.today()
+         if form.is_valid():
+             form.cleaned_data
+             instance = form.save(commit=False)
+             instance.company = company
+             instance.date_created = date_created
+             instance.save()
+             return render(request, 'rmanage/rdrive_added.html', {})
+      
+    else:
+        form = RecruitmentDriveForm()
+ 
+    return render(request, 'rmanage/rdrive_create.html', {'form': form, 'company': company})    
+
 @login_required
 def create_rdrive(request, company):
     if is_admin(request, company):
         return HttpResponse("Recruitment drive form.")
     else:
         raise Http404()
+
 
 
 @login_required
