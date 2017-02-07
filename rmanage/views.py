@@ -36,7 +36,11 @@ def advert(request, company):
     if company_exists(company):
         company = Company.objects.get(name=company)
         notices = Notice.objects.filter(company=company).order_by('-date_created')
-        return render(request, 'rmanage/advert.html', {'notices': notices})
+        return render(request, 'rmanage/advert.html', {
+                                                    'notices': notices,
+                                                    'company': company
+                                                    }
+                                                )
     else:
         raise Http404()
 
@@ -54,16 +58,22 @@ def apply_into(request, company):
                 applicant_detail.applicant = applicant
                 applicant_detail.company = company
                 applicant_detail.save()
-                
+                roles = request.POST.getlist('role')
+                for r_id in roles:
+                    rdrive = RecruitmentDrive.objects.get(pk=r_id)
+                    applicant_detail.rdrive.add(rdrive)
+ 
                 return HttpResponseRedirect('/rmanage/company/' + company.name)
         else:
                 form = ApplicantForm()
                 detailform = ApplicantDetailForm()
-            
+                rdrives = RecruitmentDrive.objects.filter(company=Company.objects.get(name=company))
+ 
         return render(request, 'rmanage/apply.html', {
                                             'form': form,
                                             'detailform': detailform,
-                                            'company': company
+                                            'company': company,
+                                            'rdrives': rdrives
                                                 }
                                             )
     else:
@@ -100,7 +110,12 @@ def see_notices(request, company):
 @login_required
 def rdrive(request, company, r_id):
     if company_auth(request, company):
-        return HttpResponse("Recruitment drive page.")
+        try:
+            rdrive = RecruitmentDrive.objects.get(pk=r_id)
+            rounds = Round.objects.filter(recruitment_drive=rdrive)
+            panels = Panel.objects.filter(rdrive=rdrive)
+        except:
+            raise Http404()
     else:
         raise Http404()
 

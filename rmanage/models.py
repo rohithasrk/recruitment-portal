@@ -12,6 +12,17 @@ class Company(models.Model):
        return self.name
 
 
+class RecruitmentDrive(models.Model):
+    company = models.ForeignKey(Company)
+    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=100)
+    date_created = models.DateField()
+    end_date = models.DateField()
+
+    def __str__(self):
+      return "%s- %s" %(self.company.name, self.name)
+
+
 class Applicant(models.Model):
     name = models.CharField(max_length=30)
     email = models.EmailField()
@@ -26,23 +37,13 @@ class ApplicantDetail(models.Model):
     company = models.ForeignKey(Company)
     phone_no = models.CharField(max_length=15)
     resume = models.FileField(upload_to='resume/')
+    rdrive = models.ManyToManyField(RecruitmentDrive)
     role = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
     score = models.IntegerField(default=0)
 
     def __str__(self):
        return self.applicant.name
-
-
-class RecruitmentDrive(models.Model):
-    company = models.ForeignKey(Company)
-    name = models.CharField(max_length=100)
-    role = models.CharField(max_length=100)
-    date_created = models.DateField()
-    end_date = models.DateField()
-
-    def __str__(self):
-      return "%s- %s" %(self.company.name, self.name)
 
    
 class Round(models.Model):

@@ -1,25 +1,23 @@
-<a href="../rdrive/createnew">Create a New Recruitment Drive</a></br></br>
+<a href="../rdrive/createnew">Create a New Recruitment Drive</a><br><br>
 
 Ongoing Recruitment Drives
-</br>
+<br>
 {% for drive in ongoingDrives %}
 <a href="{% url 'rmanage:rdrive' drive.company.name drive.id  %}">{{ drive.name }}</a>
 {% endfor %}
-</br></br>
-
+<br>
+<br>
 Previous Recruitment Drives
+<br>
 {% for drive in previousDrives %}
 {{ drive.name  }}
 {% endfor  %}
-</br></br>
-
+<br>
+<br>
 Other Links
-</br>
+<br>
 <a href="{% url 'rmanage:add_members' company %}">Add HR Managers</a>
-</br>
+<br>
 <a href="{% url 'rmanage:add_notice' company %}">Add Notices</a>
-
-
-
-
-
+<br>
+<a href="{% url 'rmanage:collab_logout' %}">Log out</a>
