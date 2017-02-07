@@ -4,9 +4,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
 import datetime
+
 from .forms import *
 from .models import *
-from .forms import *
 
 
 def index(request):
@@ -18,7 +18,6 @@ def register(request):
          form = CompanyForm(request.POST)
          if form.is_valid():
              form.cleaned_data
-             instance = form.save()
              company = form.save(commit=False)
              company.save()
              admin = User(username=company.email)
@@ -104,7 +103,6 @@ def rdrive(request, company, r_id):
         raise Http404()
 
 
-
 def rdrive_create(request, company):
     if request.method == 'POST':
          form = RecruitmentDriveForm(request.POST)
@@ -172,13 +170,29 @@ def add_members(request, company):
 @login_required
 def add_notice(request, company):
     if is_admin(request, company):
-        return HttpResponse("Add a notice")
+        if request.method == "POST":
+            form = NoticeForm(request.POST)
+            if form.is_valid():
+                form.cleaned_data
+                notice = form.save(commit=False)
+                notice.company = Company.objects.get(name=company)
+                notice.date_created = datetime.date.today()
+                notice.save()
+                return HttpResponseRedirect('/rmanage/company/' + company +'/manage/')
+        else:
+            form = NoticeForm()
+
+        return render(request, 'rmanage/add_notice.html', {'form': form})
+    else:
+        raise Http404()
 
 
 @login_required
 def view_candidates(request, company):
     if company_auth(request, company):
         return HttpResponse("View Candidate")
+    else:
+        raise Http404()
 
 
 @login_required

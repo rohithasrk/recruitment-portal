@@ -92,3 +92,11 @@ class Score(models.Model):
        return self.applicant.name
 
 
+class Notice(models.Model):
+    company = models.ForeignKey(Company)
+    title = models.CharField(max_length=50)
+    text = models.CharField(max_length=200)
+    date_created = models.DateField()
+    
+    def __str__(self):
+        return self.title
