@@ -1,0 +1,12 @@
+Welcome to Recruitment Drive Page.
+
+Name of Recuitment Drive: {{rdrive.name}}</br>
+</br>
+Rounds in the given recuitment drive are</br>
+{% for round in rounds  %}
+{{round.name}}
+{% endfor %}
+</br></br>
+
+<a href="{% url 'rmanage:add_panel' rdrive.company.name rdrive.id  %}">Add Another Round </a>
+ 
