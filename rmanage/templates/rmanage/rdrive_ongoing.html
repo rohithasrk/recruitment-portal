@@ -1,0 +1,31 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rdrive</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1>{{rdrive.name}}</h1>
+        <div class="round">
+            {% for round in rounds %}
+                {{ round.name }} : {{ round.role }}
+            {% endfor %}
+            <a href="#">Add round</a>
+        </div>
+        <div class="panel">
+            {% for panel in panels %}
+                {{ panel.name }}
+                Current candidate: {{ panel.current_candidate.name }}
+                Round: {{ panel.round_info.name }}
+            {% endfor %}
+            <a href="#">Add Panel</a>
+        </div>
+        <div class="applicants">
+            Applicants:
+            {% for applicant in applicants %}
+                Name: {{ applicant.applicant.name }}
+            {% endfor %}
+        </div>
+    </body>
+</html>

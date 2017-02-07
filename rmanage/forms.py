@@ -20,7 +20,7 @@ class ApplicantForm(forms.ModelForm):
 class ApplicantDetailForm(forms.ModelForm):
     class Meta:
         model = ApplicantDetail
-        fields = ['phone_no','role']
+        fields = ['phone_no']
 
 class RecruitmentDriveForm(forms.ModelForm):
     end_date = forms.DateField(widget=forms.DateInput())
@@ -28,14 +28,23 @@ class RecruitmentDriveForm(forms.ModelForm):
         model = RecruitmentDrive
         fields = ['name', 'role', 'end_date']
 
-class RoundForm(models.Model):
+class RoundForm(forms.ModelForm):
     class Meta:
+        model = Round
         fields = ['name', 'role']
 
-class PanelForm(models.Model):
+class PanelForm(forms.ModelForm):
     class Meta:
+        model = Panel
         fields = ['name', 'rdrive', 'round_info']
 
-class CollaboratorForm(models.Model):
+class CollaboratorForm(forms.ModelForm):
     class Meta:
+        model = Collaborator
         fields = ['panel', 'phone_no']
+
+class NoticeForm(forms.ModelForm):
+    text = forms.CharField(widget=forms.Textarea)
+    class Meta:
+        model = Notice
+        fields = ['title', 'text']

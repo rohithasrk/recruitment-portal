@@ -9,6 +9,11 @@
             {% csrf_token %}
             {{ form.as_p }}
             {{ detailform.as_p }}
+            Role:
+            {% for rdrive in rdrives %}
+            <input type="checkbox" name="role" value="{{rdrive.id}}">{{ rdrive.name }}</input>
+            {% endfor %}
+            <br><br>
             <input type="submit" value="Submit"/>
         </form>
     </body>

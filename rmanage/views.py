@@ -4,9 +4,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
 import datetime
+
 from .forms import *
 from .models import *
-from .forms import *
 
 
 def index(request):
@@ -18,7 +18,6 @@ def register(request):
          form = CompanyForm(request.POST)
          if form.is_valid():
              form.cleaned_data
-             instance = form.save()
              company = form.save(commit=False)
              company.save()
              admin = User(username=company.email)
@@ -35,10 +34,13 @@ def register(request):
 
 def advert(request, company):
     if company_exists(company):
+        company = Company.objects.get(name=company)
+        notices = Notice.objects.filter(company=company).order_by('-date_created')
         return render(request, 'rmanage/advert.html', {
-                        'company': company,
-                        }
-                    )
+                                                    'notices': notices,
+                                                    'company': company
+                                                    }
+                                                )
     else:
         raise Http404()
 
@@ -56,16 +58,22 @@ def apply_into(request, company):
                 applicant_detail.applicant = applicant
                 applicant_detail.company = company
                 applicant_detail.save()
-                
+                roles = request.POST.getlist('role')
+                for r_id in roles:
+                    rdrive = RecruitmentDrive.objects.get(pk=r_id)
+                    applicant_detail.rdrive.add(rdrive)
+ 
                 return HttpResponseRedirect('/rmanage/company/' + company.name)
         else:
                 form = ApplicantForm()
                 detailform = ApplicantDetailForm()
-            
+                rdrives = RecruitmentDrive.objects.filter(company=Company.objects.get(name=company))
+ 
         return render(request, 'rmanage/apply.html', {
                                             'form': form,
                                             'detailform': detailform,
-                                            'company': company
+                                            'company': company,
+                                            'rdrives': rdrives
                                                 }
                                             )
     else:
@@ -90,7 +98,10 @@ def manage(request, company):
 
 def see_notices(request, company):
     if company_exists(company):
-        return HttpResponse("Notices page.")
+        company = Company.objects.get(name=company)
+        notices = Notice.objects.filter(company=company).order_by('-date_created')
+        
+        return render(request, 'rmanage/notices.html', {'notices':notices})
     else:
         raise Http404()
 
@@ -98,18 +109,20 @@ def see_notices(request, company):
 @login_required
 def rdrive(request, company, r_id):
     if company_auth(request, company):
-        rdrive = RecruitmentDrive.objects.get(id=r_id)
-        company = Company.objects.get(name=company)
-        rounds = Round.objects.get(recruitment_drive =rdrive, company=company)
-        return render(request, 'rmanage/rdrive.html',{
-                        'rdrive':rdrive,
-                        'rounds':rounds
-                       } 
-                     )
-
+        rdrive = RecruitmentDrive.objects.get(pk=r_id)
+        rounds = Round.objects.filter(recruitment_drive=rdrive)
+        panels = Panel.objects.filter(rdrive=rdrive)
+        applicants = ApplicantDetail.objects.filter(rdrive=rdrive)
+    
+        return render(request, 'rmanage/rdrive_ongoing.html', {
+                                                    'rdrive': rdrive,
+                                                    'rounds': rounds,
+                                                    'panels': panels,
+                                                    'applicants': applicants
+                                                    }
+                                            )
     else:
         raise Http404()
-
 
 
 def rdrive_create(request, company):
@@ -131,30 +144,42 @@ def rdrive_create(request, company):
  
     return render(request, 'rmanage/rdrive_create.html', {'form': form, 'company': company})    
 
-@login_required
-def create_rdrive(request, company):
-    if is_admin(request, company):
-        return HttpResponse("Recruitment drive form.")
-    else:
-        raise Http404()
-
-
-
-@login_required
-def rdrive_start(request, company):
-    if is_admin(request, company):
-        return HttpResponse("Start a new recruitment drive")
-    else:
-        raise Http404()
-
 
 @login_required
 def rdrive_create(request, company):
     if is_admin(request, company):
-        return HttpResponse("Create a recuitment drive")
+        if request.method == 'POST':
+             form = RecruitmentDriveForm(request.POST)
+             company = company.lower()
+             company = Company.objects.get(name=company);          
+             date_created = datetime.date.today()
+             if form.is_valid():
+                 form.cleaned_data
+                 instance = form.save(commit=False)
+                 instance.company = company
+                 instance.date_created = date_created
+                 instance.save()
+                 return render(request, 'rmanage/rdrive_added.html', {})
+          
+        else:
+            form = RecruitmentDriveForm()
+     
+        return render(request, 'rmanage/rdrive_create.html', {'form': form, 'company': company})    
     else:
         raise Http404()
 
+
+def rdrive_round(request, company, r_id):
+    if is_admin(request, company):
+        if request.method == 'POST':
+            form = RoundForm(request.POST)
+            if form.is_valid():
+                form.cleaned_data
+                instance = form.save(commit=False)
+                instance.company = Company.objects.get(name=company)
+                instance.recruitment_drive = RecruitmentDrive.objects.get(pk=r_id)
+    else:
+        raise Http404()
 
 @login_required
 def panel(request, company):
@@ -183,13 +208,29 @@ def add_members(request, company):
 @login_required
 def add_notice(request, company):
     if is_admin(request, company):
-        return HttpResponse("Add a notice")
+        if request.method == "POST":
+            form = NoticeForm(request.POST)
+            if form.is_valid():
+                form.cleaned_data
+                notice = form.save(commit=False)
+                notice.company = Company.objects.get(name=company)
+                notice.date_created = datetime.date.today()
+                notice.save()
+                return HttpResponseRedirect('/rmanage/company/' + company +'/manage/')
+        else:
+            form = NoticeForm()
+
+        return render(request, 'rmanage/add_notice.html', {'form': form})
+    else:
+        raise Http404()
 
 
 @login_required
 def view_candidates(request, company):
     if company_auth(request, company):
         return HttpResponse("View Candidate")
+    else:
+        raise Http404()
 
 
 @login_required
