@@ -34,10 +34,9 @@ def register(request):
 
 def advert(request, company):
     if company_exists(company):
-        return render(request, 'rmanage/advert.html', {
-                        'company': company,
-                        }
-                    )
+        company = Company.objects.get(name=company)
+        notices = Notice.objects.filter(company=company).order_by('-date_created')
+        return render(request, 'rmanage/advert.html', {'notices': notices})
     else:
         raise Http404()
 
@@ -90,7 +89,10 @@ def manage(request, company):
 
 def see_notices(request, company):
     if company_exists(company):
-        return HttpResponse("Notices page.")
+        company = Company.objects.get(name=company)
+        notices = Notice.objects.filter(company=company).order_by('-date_created')
+        
+        return render(request, 'rmanage/notices.html', {'notices':notices})
     else:
         raise Http404()
 
@@ -122,27 +124,27 @@ def rdrive_create(request, company):
  
     return render(request, 'rmanage/rdrive_create.html', {'form': form, 'company': company})    
 
-@login_required
-def create_rdrive(request, company):
-    if is_admin(request, company):
-        return HttpResponse("Recruitment drive form.")
-    else:
-        raise Http404()
-
-
-
-@login_required
-def rdrive_start(request, company):
-    if is_admin(request, company):
-        return HttpResponse("Start a new recruitment drive")
-    else:
-        raise Http404()
-
 
 @login_required
 def rdrive_create(request, company):
     if is_admin(request, company):
-        return HttpResponse("Create a recuitment drive")
+        if request.method == 'POST':
+             form = RecruitmentDriveForm(request.POST)
+             company = company.lower()
+             company = Company.objects.get(name=company);          
+             date_created = datetime.date.today()
+             if form.is_valid():
+                 form.cleaned_data
+                 instance = form.save(commit=False)
+                 instance.company = company
+                 instance.date_created = date_created
+                 instance.save()
+                 return render(request, 'rmanage/rdrive_added.html', {})
+          
+        else:
+            form = RecruitmentDriveForm()
+     
+        return render(request, 'rmanage/rdrive_create.html', {'form': form, 'company': company})    
     else:
         raise Http404()
 
