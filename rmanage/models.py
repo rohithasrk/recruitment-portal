@@ -1,15 +1,17 @@
+from django.contrib.auth.models import Group, User
 from django.db import models
-from django.contrib.auth.models import User, Group
+
 
 # Create your models here.
+
 
 class Company(models.Model):
     name = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
     password = models.CharField(max_length=30)
-    
+
     def __str__(self):
-       return self.name
+        return self.name
 
 
 class RecruitmentDrive(models.Model):
@@ -20,7 +22,7 @@ class RecruitmentDrive(models.Model):
     end_date = models.DateField()
 
     def __str__(self):
-      return "%s- %s" %(self.company.name, self.name)
+        return "%s- %s" % (self.company.name, self.name)
 
 
 class Applicant(models.Model):
@@ -29,7 +31,7 @@ class Applicant(models.Model):
     password = models.CharField(max_length=30)
 
     def __str__(self):
-       return self.name
+        return self.name
 
 
 class ApplicantDetail(models.Model):
@@ -43,9 +45,9 @@ class ApplicantDetail(models.Model):
     score = models.IntegerField(default=0)
 
     def __str__(self):
-       return self.applicant.name
+        return self.applicant.name
 
-   
+
 class Round(models.Model):
     name = models.CharField(max_length=100)
     company = models.ForeignKey(Company)
@@ -53,7 +55,8 @@ class Round(models.Model):
     role = models.CharField(max_length=100)
 
     def __str__(self):
-       return "%s- %s  Round: %s" %(self.company.name, self.recruitment_drive.name, self.name)
+        return "%s- %s  Round: %s" % (self.company.name,
+                                      self.recruitment_drive.name, self.name)
 
 
 class Panel(models.Model):
@@ -63,7 +66,7 @@ class Panel(models.Model):
     round_info = models.ForeignKey(Round)
 
     def __str__(self):
-       return self.name
+        return self.name
 
 
 class Collaborator(models.Model):
@@ -73,7 +76,7 @@ class Collaborator(models.Model):
     phone_no = models.CharField(max_length=15)
 
     def __str__(self):
-       return self.hr.username
+        return self.hr.username
 
 
 class CompanyAdmin(models.Model):
@@ -90,7 +93,7 @@ class Score(models.Model):
     score = models.IntegerField(default=0)
 
     def __str__(self):
-       return self.applicant.name
+        return self.applicant.name
 
 
 class Notice(models.Model):
@@ -98,6 +101,6 @@ class Notice(models.Model):
     title = models.CharField(max_length=50)
     text = models.CharField(max_length=200)
     date_created = models.DateField()
-    
+
     def __str__(self):
         return self.title

@@ -1,7 +1,5 @@
 from django.conf.urls import url
 
-from . import views
-
 app_name = 'rmanage'
 company_url = "r'^company/(?P<company>[A-Za-z0-9]+)"
 urlpatterns = [
@@ -13,7 +11,7 @@ urlpatterns = [
     url(r'^company/(?P<company>[A-Za-z0-9]+)/apply/$', views.apply_into, name='apply_into'),
     url(r'^company/(?P<company>[A-Za-z0-9]+)/manage/$', views.manage, name='manage'),
     url(r'^company/(?P<company>[A-Za-z0-9]+)/notices/$', views.see_notices, name='see_notices'),
-    url(r'^company/(?P<company>[A-Za-z0-9]+)/rdrive/(?P<r_id>(\d+))$', views.rdrive, name='rdrive'), 
+    url(r'^company/(?P<company>[A-Za-z0-9]+)/rdrive/(?P<r_id>(\d+))$', views.rdrive, name='rdrive'),
     url(r'^company/(?P<company>[A-Za-z0-9]+)/rdrive/(?P<r_id>(\d+))/panel$', views.rdrive, name='add_panel'),
     url(r'^company/(?P<company>[A-Za-z0-9]+)/rdrive/createnew/$', views.rdrive_create, name='rdrive_create'),
     url(r'^company/(?P<company>[A-Za-z0-9]+)/panel/$', views.panel, name='panel'),
